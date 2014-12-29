@@ -10,31 +10,36 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sawyerhood.weekgames.anaconda.AnacondaGame;
 import com.sawyerhood.weekgames.anaconda.entities.PowerUp;
+import com.sawyerhood.weekgames.anaconda.events.listeners.MoveSnakeEvent;
+import com.sawyerhood.weekgames.anaconda.events.listeners.SnakeMoveListener;
+import com.sawyerhood.weekgames.anaconda.input.GameScreenInputListener;
 import com.sawyerhood.weekgames.anaconda.settings.Settings;
 import com.sawyerhood.weekgames.anaconda.entities.Snake;
 import com.sawyerhood.weekgames.anaconda.util.Heading;
+import  com.google.common.eventbus.EventBus;
 
 import java.util.Random;
 
 /**
  * Created by sawyer on 12/28/14.
  */
-public class AnacondaGameScreen extends AbstractScreen implements InputProcessor{
+public class AnacondaGameScreen extends AbstractScreen{
 
     private ShapeRenderer renderer;
-    private Viewport viewport;
     private Snake snake;
     private PowerUp powerUp;
+    private EventBus eventBus;
 
 
     public AnacondaGameScreen(AnacondaGame game) {
         super(game);
         renderer = new ShapeRenderer();
-        viewport = new StretchViewport(Settings.GAME_WORLD_X, Settings.GAME_WORLD_Y);
         snake = new Snake();
+        eventBus = new EventBus();
+        eventBus.register(new SnakeMoveListener(snake));
 
         spawnPowerUp();
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(new GameScreenInputListener(eventBus));
 
     }
 
@@ -50,8 +55,6 @@ public class AnacondaGameScreen extends AbstractScreen implements InputProcessor
     @Override
     public void render(float delta) {
         boolean gameOver = snake.update(delta);
-        renderer.setProjectionMatrix(viewport.getCamera().projection);
-        renderer.setTransformMatrix(viewport.getCamera().view);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         snake.draw(renderer, delta);
         powerUp.draw(renderer, delta);
@@ -67,9 +70,7 @@ public class AnacondaGameScreen extends AbstractScreen implements InputProcessor
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        viewport.getCamera().position.set(width/2f, height/2f, 0);
-        viewport.getCamera().update();
+
     }
 
     @Override
@@ -93,57 +94,5 @@ public class AnacondaGameScreen extends AbstractScreen implements InputProcessor
     }
 
 
-    @Override
-    public boolean keyDown(int keycode) {
-        switch(keycode) {
-            case Input.Keys.W:
-                snake.setHeading(Heading.NORTH);
-                break;
-            case Input.Keys.A:
-                snake.setHeading(Heading.WEST);
-                break;
-            case Input.Keys.S:
-                snake.setHeading(Heading.SOUTH);
-                break;
-            case Input.Keys.D:
-                snake.setHeading(Heading.EAST);
-                break;
-        }
-        return false;
-    }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-    }
 }

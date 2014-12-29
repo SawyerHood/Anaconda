@@ -5,7 +5,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 /**
  * Created by sawyer on 12/28/14.
  */
-public interface GameObject {
-    public boolean update(float delta);
-    public void draw(ShapeRenderer renderer, float delta);
+public class GameObject {
+    public boolean update(float delta) {
+        return false;
+    }
+
+    public void draw(ShapeRenderer renderer, float delta) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.sawyerhood.weekgames.anaconda.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.sawyerhood.weekgames.anaconda.settings.Settings;
@@ -8,7 +9,7 @@ import java.util.Random;
 /**
  * Created by sawyer on 12/28/14.
  */
-public class SnakeNode implements GameObject {
+public class SnakeNode extends GameObject {
     private int x,y;
     private Color nodeColor;
     private boolean goingUp = true;
@@ -20,6 +21,10 @@ public class SnakeNode implements GameObject {
 
     }
 
+    public SnakeNode() {
+        this(0,0);
+    }
+
     @Override
     public boolean update(float delta) {
         return false;
@@ -28,8 +33,8 @@ public class SnakeNode implements GameObject {
     public void setX(int x) {
         if(x > Settings.NUM_GAME_TILES_X)
             this.x = 0;
-        else if (x < 0)
-            this.x = Settings.NUM_GAME_TILES_X;
+        else if (x <= 0)
+            this.x = Settings.NUM_GAME_TILES_X ;
         else
             this.x = x;
 
@@ -48,11 +53,11 @@ public class SnakeNode implements GameObject {
     public void draw(ShapeRenderer renderer, float delta) {
 
         changeColor();
-        float width = Settings.GAME_WORLD_X/Settings.NUM_GAME_TILES_X;
-        float height = Settings.GAME_WORLD_Y/Settings.NUM_GAME_TILES_Y;
+        float width = Gdx.graphics.getWidth()/Settings.NUM_GAME_TILES_X;
+        float height = Gdx.graphics.getHeight()/Settings.NUM_GAME_TILES_Y;
 
         renderer.setColor(nodeColor);
-        renderer.rect(x*width, y*width, width, height);
+        renderer.rect(x*width, y*width, width + .5f, height + .5f);
     }
 
     public int getX() {

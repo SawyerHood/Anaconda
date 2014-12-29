@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by sawyer on 12/28/14.
  */
-public class Snake implements GameObject {
+public class Snake extends GameObject {
 
     private float speed;
     private ArrayList<SnakeNode> nodes;
