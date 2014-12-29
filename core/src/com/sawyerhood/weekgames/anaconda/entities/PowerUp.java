@@ -39,7 +39,7 @@ public class PowerUp implements GameObject {
 
 
     @Override
-    public void draw(ShapeRenderer renderer) {
+    public void draw(ShapeRenderer renderer, float delta) {
         float width = Settings.GAME_WORLD_X/Settings.NUM_GAME_TILES_X;
         float height = Settings.GAME_WORLD_Y/Settings.NUM_GAME_TILES_Y;
         renderer.setColor(Color.RED);

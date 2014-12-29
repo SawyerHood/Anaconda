@@ -3,6 +3,7 @@ package com.sawyerhood.weekgames.anaconda.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -24,21 +25,21 @@ public class AnacondaGameScreen extends AbstractScreen implements InputProcessor
     private Viewport viewport;
     private Snake snake;
     private PowerUp powerUp;
-    private Random rand;
+
 
     public AnacondaGameScreen(AnacondaGame game) {
         super(game);
         renderer = new ShapeRenderer();
         viewport = new StretchViewport(Settings.GAME_WORLD_X, Settings.GAME_WORLD_Y);
         snake = new Snake();
-        rand = new Random();
+
         spawnPowerUp();
         Gdx.input.setInputProcessor(this);
 
     }
 
     public void spawnPowerUp() {
-        powerUp = new PowerUp(rand.nextInt(Settings.NUM_GAME_TILES_X), rand.nextInt(Settings.NUM_GAME_TILES_Y));
+        powerUp = new PowerUp(Settings.rand.nextInt(Settings.NUM_GAME_TILES_X), Settings.rand.nextInt(Settings.NUM_GAME_TILES_Y));
     }
 
     @Override
@@ -52,8 +53,8 @@ public class AnacondaGameScreen extends AbstractScreen implements InputProcessor
         renderer.setProjectionMatrix(viewport.getCamera().projection);
         renderer.setTransformMatrix(viewport.getCamera().view);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        snake.draw(renderer);
-        powerUp.draw(renderer);
+        snake.draw(renderer, delta);
+        powerUp.draw(renderer, delta);
         renderer.end();
         if (gameOver)
             game.setScreen(new MenuScreen(game));

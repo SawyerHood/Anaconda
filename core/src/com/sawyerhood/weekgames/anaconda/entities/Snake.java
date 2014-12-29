@@ -16,6 +16,7 @@ public class Snake implements GameObject {
     private Heading heading;
     private float timeSinceLastUpdate;
 
+
     public Snake () {
         this.speed = Settings.STARTING_SPEED;
         this.nodes = new ArrayList<SnakeNode>();
@@ -26,7 +27,7 @@ public class Snake implements GameObject {
         this.nodes.add(new SnakeNode(11,9));
     }
 
-
+    @Override
     public boolean update(float delta) {
         timeSinceLastUpdate += delta;
         if (timeSinceLastUpdate >= speed) {
@@ -69,10 +70,10 @@ public class Snake implements GameObject {
         return false;
     }
 
-
-    public void draw(ShapeRenderer renderer) {
+    @Override
+    public void draw(ShapeRenderer renderer, float delta) {
         for (SnakeNode node : nodes) {
-            node.draw(renderer);
+            node.draw(renderer, delta);
         }
     }
 

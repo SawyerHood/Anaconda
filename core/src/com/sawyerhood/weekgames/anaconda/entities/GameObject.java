@@ -7,5 +7,5 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public interface GameObject {
     public boolean update(float delta);
-    public void draw(ShapeRenderer renderer);
+    public void draw(ShapeRenderer renderer, float delta);
 }
