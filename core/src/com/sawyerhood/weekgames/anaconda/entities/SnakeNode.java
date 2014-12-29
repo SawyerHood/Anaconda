@@ -26,8 +26,8 @@ public class SnakeNode extends GameObject {
     }
 
     @Override
-    public boolean update(float delta) {
-        return false;
+    public void update(float delta) {
+
     }
 
     public void setX(int x) {

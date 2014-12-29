@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.google.common.eventbus.Subscribe;
 import com.sawyerhood.weekgames.anaconda.AnacondaGame;
 import com.sawyerhood.weekgames.anaconda.entities.PowerUp;
+import com.sawyerhood.weekgames.anaconda.events.listeners.GameOverEvent;
 import com.sawyerhood.weekgames.anaconda.events.listeners.MoveSnakeEvent;
 import com.sawyerhood.weekgames.anaconda.events.listeners.SnakeMoveListener;
 import com.sawyerhood.weekgames.anaconda.input.GameScreenInputListener;
@@ -34,9 +36,11 @@ public class AnacondaGameScreen extends AbstractScreen{
     public AnacondaGameScreen(AnacondaGame game) {
         super(game);
         renderer = new ShapeRenderer();
-        snake = new Snake();
+
         eventBus = new EventBus();
+        snake = new Snake(eventBus);
         eventBus.register(new SnakeMoveListener(snake));
+        eventBus.register(this);
 
         spawnPowerUp();
         Gdx.input.setInputProcessor(new GameScreenInputListener(eventBus));
@@ -54,13 +58,11 @@ public class AnacondaGameScreen extends AbstractScreen{
 
     @Override
     public void render(float delta) {
-        boolean gameOver = snake.update(delta);
+        snake.update(delta);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         snake.draw(renderer, delta);
         powerUp.draw(renderer, delta);
         renderer.end();
-        if (gameOver)
-            game.setScreen(new MenuScreen(game));
         if(com.sawyerhood.weekgames.anaconda.util.Etc.doesCollide(snake.getHead().getX(), snake.getHead().getY(), powerUp.getX(), powerUp.getY())){
             snake.addToTail();
             spawnPowerUp();
@@ -91,6 +93,11 @@ public class AnacondaGameScreen extends AbstractScreen{
     @Override
     public void dispose() {
 
+    }
+
+    @Subscribe
+    public void GameOver(GameOverEvent e) {
+        game.setScreen(new MenuScreen(game));
     }
 
 

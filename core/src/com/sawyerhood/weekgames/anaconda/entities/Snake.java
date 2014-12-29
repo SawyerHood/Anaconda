@@ -1,8 +1,10 @@
 package com.sawyerhood.weekgames.anaconda.entities;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.google.common.eventbus.EventBus;
 import com.sawyerhood.weekgames.anaconda.util.Heading;
 import com.sawyerhood.weekgames.anaconda.settings.Settings;
+import com.sawyerhood.weekgames.anaconda.events.listeners.GameOverEvent;
 
 import java.util.ArrayList;
 
@@ -15,9 +17,10 @@ public class Snake extends GameObject {
     private ArrayList<SnakeNode> nodes;
     private Heading heading;
     private float timeSinceLastUpdate;
+    private EventBus eventBus;
 
 
-    public Snake () {
+    public Snake (EventBus eventBus) {
         this.speed = Settings.STARTING_SPEED;
         this.nodes = new ArrayList<SnakeNode>();
         this.heading = Heading.NORTH;
@@ -25,10 +28,11 @@ public class Snake extends GameObject {
         this.nodes.add(new SnakeNode(11,11));
         this.nodes.add(new SnakeNode(11,10));
         this.nodes.add(new SnakeNode(11,9));
+        this.eventBus = eventBus;
     }
 
     @Override
-    public boolean update(float delta) {
+    public void update(float delta) {
         timeSinceLastUpdate += delta;
         if (timeSinceLastUpdate >= speed) {
             System.out.println("X: " + getHead().getX() + " Y: " + getHead().getY());
@@ -36,9 +40,11 @@ public class Snake extends GameObject {
             timeSinceLastUpdate = 0f;
             if (speed > .05f)
                 speed -= .001f;
-            return checkCollisions(getHead());
+            if(checkCollisions(getHead())) {
+                eventBus.post(new GameOverEvent());
+            }
         }
-        return false;
+
 
 
     }
