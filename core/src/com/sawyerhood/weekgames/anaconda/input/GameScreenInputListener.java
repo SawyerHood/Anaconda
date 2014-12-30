@@ -1,5 +1,6 @@
 package com.sawyerhood.weekgames.anaconda.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.sawyerhood.weekgames.anaconda.events.listeners.MoveSnakeEvent;
@@ -48,6 +49,15 @@ public class GameScreenInputListener implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (screenX < Gdx.graphics.getWidth()/3) {
+            eventBus.post(new MoveSnakeEvent(Heading.WEST));
+        } else if (screenX > 2*(Gdx.graphics.getWidth()/3)) {
+            eventBus.post(new MoveSnakeEvent(Heading.EAST));
+        } else if (screenY < Gdx.graphics.getHeight()/3) {
+            eventBus.post(new MoveSnakeEvent(Heading.NORTH));
+        } else if (screenY > 2*(Gdx.graphics.getHeight()/3)) {
+            eventBus.post(new MoveSnakeEvent(Heading.SOUTH));
+        }
         return false;
     }
 
