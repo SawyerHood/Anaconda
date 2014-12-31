@@ -1,31 +1,24 @@
 package com.sawyerhood.weekgames.anaconda.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.input.GestureDetector;
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.sawyerhood.weekgames.anaconda.AnacondaGame;
 import com.sawyerhood.weekgames.anaconda.entities.PowerUp;
-import com.sawyerhood.weekgames.anaconda.events.listeners.GameOverEvent;
-import com.sawyerhood.weekgames.anaconda.events.listeners.MoveSnakeEvent;
-import com.sawyerhood.weekgames.anaconda.events.listeners.SnakeMoveListener;
-import com.sawyerhood.weekgames.anaconda.input.GameScreenInputListener;
-import com.sawyerhood.weekgames.anaconda.settings.Settings;
 import com.sawyerhood.weekgames.anaconda.entities.Snake;
-import com.sawyerhood.weekgames.anaconda.util.Heading;
-import  com.google.common.eventbus.EventBus;
-
-import java.util.Random;
+import com.sawyerhood.weekgames.anaconda.events.listeners.GameOverEvent;
+import com.sawyerhood.weekgames.anaconda.events.listeners.SnakeMoveListener;
+import com.sawyerhood.weekgames.anaconda.input.DesktopGameScreenInputListener;
+import com.sawyerhood.weekgames.anaconda.input.MobileSwipeListener;
+import com.sawyerhood.weekgames.anaconda.settings.Settings;
 
 /**
  * Created by sawyer on 12/28/14.
  */
-public class AnacondaGameScreen extends AbstractScreen{
+public class AnacondaGameScreen extends AbstractScreen {
 
     private ShapeRenderer renderer;
     private Snake snake;
@@ -43,7 +36,10 @@ public class AnacondaGameScreen extends AbstractScreen{
         eventBus.register(this);
 
         spawnPowerUp();
-        Gdx.input.setInputProcessor(new GameScreenInputListener(eventBus));
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(new DesktopGameScreenInputListener(eventBus));
+        inputMultiplexer.addProcessor(new GestureDetector(new MobileSwipeListener(eventBus)));
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
     }
 
@@ -63,7 +59,7 @@ public class AnacondaGameScreen extends AbstractScreen{
         snake.draw(renderer, delta);
         powerUp.draw(renderer, delta);
         renderer.end();
-        if(com.sawyerhood.weekgames.anaconda.util.Etc.doesCollide(snake.getHead().getX(), snake.getHead().getY(), powerUp.getX(), powerUp.getY())){
+        if (com.sawyerhood.weekgames.anaconda.util.Etc.doesCollide(snake.getHead().getX(), snake.getHead().getY(), powerUp.getX(), powerUp.getY())) {
             snake.addToTail();
             spawnPowerUp();
         }
@@ -99,7 +95,6 @@ public class AnacondaGameScreen extends AbstractScreen{
     public void GameOver(GameOverEvent e) {
         game.setScreen(new MenuScreen(game));
     }
-
 
 
 }

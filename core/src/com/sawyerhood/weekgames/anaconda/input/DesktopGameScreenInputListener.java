@@ -10,11 +10,11 @@ import com.google.common.eventbus.EventBus;
 /**
  * Created by sawyer on 12/29/14.
  */
-public class GameScreenInputListener implements InputProcessor {
+public class DesktopGameScreenInputListener implements InputProcessor {
 
     private EventBus eventBus;
 
-    public GameScreenInputListener(EventBus eventBus) {
+    public DesktopGameScreenInputListener(EventBus eventBus) {
         this.eventBus = eventBus;
     }
 
@@ -49,15 +49,6 @@ public class GameScreenInputListener implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (screenX < Gdx.graphics.getWidth()/3) {
-            eventBus.post(new MoveSnakeEvent(Heading.WEST));
-        } else if (screenX > 2*(Gdx.graphics.getWidth()/3)) {
-            eventBus.post(new MoveSnakeEvent(Heading.EAST));
-        } else if (screenY < Gdx.graphics.getHeight()/3) {
-            eventBus.post(new MoveSnakeEvent(Heading.NORTH));
-        } else if (screenY > 2*(Gdx.graphics.getHeight()/3)) {
-            eventBus.post(new MoveSnakeEvent(Heading.SOUTH));
-        }
         return false;
     }
 

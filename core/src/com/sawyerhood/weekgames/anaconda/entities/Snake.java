@@ -35,7 +35,6 @@ public class Snake extends GameObject {
     public void update(float delta) {
         timeSinceLastUpdate += delta;
         if (timeSinceLastUpdate >= speed) {
-            System.out.println("X: " + getHead().getX() + " Y: " + getHead().getY());
             updatePositions();
             timeSinceLastUpdate = 0f;
             if (speed > .05f)
