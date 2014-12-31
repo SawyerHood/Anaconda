@@ -10,4 +10,10 @@ public enum Heading {
         this.x = x;
         this.y = y;
     }
+
+    public boolean isOpposite(Heading h) {
+        if (-x == h.x && -y == h.y)
+            return true;
+        return false;
+    }
 }

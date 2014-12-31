@@ -89,7 +89,8 @@ public class Snake extends GameObject {
     }
 
     public void setHeading(Heading h) {
-        heading = h;
+        if(!h.isOpposite(heading))
+            heading = h;
     }
 
 
