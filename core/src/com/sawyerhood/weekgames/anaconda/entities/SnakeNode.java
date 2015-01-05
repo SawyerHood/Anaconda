@@ -31,9 +31,9 @@ public class SnakeNode extends GameObject {
     }
 
     public void setX(int x) {
-        if(x > Settings.NUM_GAME_TILES_X)
+        if(x >= Settings.NUM_GAME_TILES_X)
             this.x = 0;
-        else if (x <= 0)
+        else if (x < 0)
             this.x = Settings.NUM_GAME_TILES_X ;
         else
             this.x = x;
@@ -41,7 +41,7 @@ public class SnakeNode extends GameObject {
     }
 
     public void setY(int y) {
-        if(y > Settings.NUM_GAME_TILES_Y)
+        if(y >= Settings.NUM_GAME_TILES_Y)
             this.y = 0;
         else if (y < 0)
             this.y = Settings.NUM_GAME_TILES_Y;
