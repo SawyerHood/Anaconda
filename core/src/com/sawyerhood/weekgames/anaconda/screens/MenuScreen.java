@@ -1,5 +1,6 @@
 package com.sawyerhood.weekgames.anaconda.screens;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -33,7 +34,7 @@ public class MenuScreen extends AbstractScreen implements InputProcessor {
         img = new Texture("badlogic.jpg");
         font = new BitmapFont();
         font.scale(2.0f);
-        titleArray = new Pixmap(new FileHandle("lol.png"));
+        titleArray = new Pixmap(Gdx.files.internal("lol.png"));
         entities = new ArrayList<GameObject>();
         shapeRenderer = new ShapeRenderer();
         initTitle();
